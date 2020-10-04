@@ -1,0 +1,9 @@
+api:
+  dashboard: true
+  # Activate API directly on the entryPoint named traefik. (Default: false)
+  insecure: true
+  # Enable additional endpoints for debugging and profiling. (Default: false)
+  debug: false
+
+metrics:
+  prometheus: { }
