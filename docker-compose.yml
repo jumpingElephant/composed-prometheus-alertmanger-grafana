@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.21.0
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager:v0.21.0
+    ports:
+      - 9093:9093
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:7.2.0
+    environment:
+      GF_INSTALL_PLUGINS: "camptocamp-prometheus-alertmanager-datasource"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+
+  traefik:
+    container_name: traefik
+    image: traefik:2.3
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - ./traefik/traefik.yml:/traefik.yml:ro
